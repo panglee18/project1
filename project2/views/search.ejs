@@ -1,0 +1,276 @@
+<html>
+<head>
+  <title>Search</title>
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
+  <link rel="stylesheet" href="stylesheets/demos.css" type="text/css" media="screen" />
+    
+    <script src="js/RGraph.common.core.js" ></script>
+    <script src="js/RGraph.bar.js" ></script>
+    <script src="js/RGraph.line.js" ></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    
+    <title>Bar and Line charts with switch effect</title>
+    
+    <meta name="robots" content="noindex,nofollow" />
+    <meta name="description" content="Bar and Line charts with switch effect" />
+
+    <style>
+        div#container {
+            position: relative;
+            width: 600px;
+            height: 250px;
+        }
+        
+        div#container canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 600px;
+            height: 250px;
+            background-color: white;
+            transition: all 1s;
+            opacity: 1;
+        }
+        
+        div#container canvas#cvs1 {
+            top: 125px;
+            left: 300px;
+            width: 0;
+            height: 0;
+            opacity: 0;
+            transform: rotate(90deg);
+        }
+    </style>
+
+    <style>
+        th{
+            text-align: right;
+        }
+    </style>
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
+    
+  <script>
+    var app = angular.module('searchApp', []).controller('MyModuleWeather', function($scope, $http, $log) {
+    // Set default values for our form fields.
+    $scope.city = 'Hong Kong';
+    
+
+  
+    // Define a function to process form submission.
+    $scope.change = function() {
+      // Fetch the data from the public API through JSONP.
+      // See http://openweathermap.org/API#weather.
+      
+      var url = 'https://assignment-panglee18.c9users.io/api';
+      $http.jsonp(url, {
+        params: {
+          search: $scope.city,
+          callback: 'JSON_CALLBACK'
+        }
+      }).
+      success(function(data, status, headers, config) {
+        var lableadd = [];
+        $scope.weathers = data;
+        
+        for(var i=0, l = data.length; i < l; i++){
+          var dt = new Date(data[i].content.dt*1000);
+          //alert('..'+dt);
+          //var labeldate = dt.toString();
+          lableadd.push(dt.getHours());
+        };
+        //labledd = ['test1','test2','test3','test4']
+        var bar = new RGraph.Bar({
+                id: 'cvs1',
+                data: [4,8,12],
+                options: {
+                    colors: ['#5690C9'],
+                    hmargin: 25,
+                    strokestyle: 'transparent',
+                    axisLinewidth: 15,
+                    textSize: 12,
+                    textColor: '#999',
+                    titleSize: 12,
+                    numyticks: 0,
+                    numxticks: 0,
+                    noxaxis: true,
+                    noyaxis: true,
+                    shadow: false,
+                    title: 'Wind Speed',
+                    backgroundGridVlines: false,
+                    backgroundGridBorder: false,
+                    labels: lableadd,
+                    textAccessible: false
+                }
+
+            }).draw();
+
+            //
+            // Create the line chart with no axes or labels
+            //
+            var line = new RGraph.Line({
+                id: 'cvs2',
+                data: [
+                    [9,30,4,8],
+                    [5,3,8,8]
+                ],
+                options: {
+                    colors: ['#B71A1A','#54A4CF'],
+                    tickmarks: function myTick (obj, data, value, index, x, y, color, prevX, prevY)
+                    {
+                        // An RGraph function
+                        RGraph.path2(obj.context, ['b', 'a',x, y, 15, 0, 2 * Math.PI, false, 'f', color]);
+                    },
+                    linewidth: 10,
+                    shadow: false,
+                    labels: lableadd,
+                    title: 'Temperature',
+                    backgroundGridVlines: false,
+                    backgroundGridBorder: false,
+                    noxaxis: true,
+                    hmargin: 25,
+                    textSize: 12,
+                    textColor: '#999',
+                    titleSize: 12,
+                    axisColor: '#999',
+                    textAccessible: false
+                }
+            }).draw();
+        
+
+      }).
+      error(function(data, status, headers, config) {
+        // Log an error in the browser's console.
+        $log.error('Could not retrieve data from ' + url);
+      });
+    };
+
+    // Trigger form submission for first load.
+    $scope.change();
+    $scope.todate = function (ts){
+      var tdate = new Date(ts*1000);
+      return tdate.toString();
+    }
+  });
+  
+ 
+//RGraph
+        
+  </script>
+</head>
+<body ng-app="searchApp">
+  <div style="margin:100px;">
+    <nav class="navbar navbar-inverse navbar-static-top">
+      
+      
+
+  <div class="container">
+    <ul class="nav navbar-nav">
+      <li>
+        <a href="/">Home</a>
+      </li>
+      <li>
+        <a href="/registry">Registration</a>
+      </li>
+      <li>
+        <a href="/login">Login</a>
+      </li>
+      <li class="active">
+        <a href="/search">Search</a>
+      </li>
+    </ul>
+
+  </div>
+</nav>
+    <div class="jumbotron"  style="padding:40px;">
+      
+          <div ng-controller="MyModuleWeather">
+  <label for="city">City</label>
+  <input type="text" ng-model="city" />
+  </br>
+  <button ng-click="change()">Change</button>
+  <div id="container">
+        <canvas id="cvs1" width="600" height="250">[No canvas support]</canvas>
+        <canvas id="cvs2" width="600" height="250">[No canvas support]</canvas>
+    </div>
+  
+  <div data-ng-repeat='weather in weathers'>
+    Weather : {{ weather.content.weather[0].description }}<br>
+    Temperature : {{ weather.content.main.temp }}<br>
+    Wind Speed : {{ weather.content.wind.speed }}<br>
+    Date: {{ todate(weather.content.dt) }}<br>
+   <br>
+  </div>
+  
+  
+  
+  
+  
+</div>
+
+      
+    </div>
+       
+  <script>
+ 
+            //
+            // First create the Bar chart but don't call the .draw() method. Only configure th gutter
+            // settings and add some labels.
+            //
+            //var lable = ['John','Fred','Lucy', 'kei'];
+            
+        //
+        // The click event handler that swaps the canvas tag width/height properties
+        //
+        $('canvas').click(function (e)
+        {
+            var id = e.target.id;
+
+            if (id === 'cvs1') {
+                $('#cvs1').css({
+                    width: 0,
+                    height: 0,
+                    top: '125px',
+                    left: '300px',
+                    opacity: 0,
+                    transform: 'rotate(90deg)'
+                });
+
+                $('#cvs2').css({
+                    width: '600px',
+                    height: '250px',
+                    top: 0,
+                    left: 0,
+                    opacity: 1,
+                    transform: 'rotate(0)'
+                });
+
+            } else {
+
+                $('#cvs2').css({
+                    width: 0,
+                    height: 0,
+                    top: '125px',
+                    left: '300px',
+                    opacity: 0,
+                    transform: 'rotate(90deg)'
+                });
+
+                $('#cvs1').css({
+                    width: '600px',
+                    height: '250px',
+                    top: 0,
+                    left: 0,
+                    opacity: 1,
+                    transform: 'rotate(0)'
+                });
+            }
+        });
+    </script>
+
+  
+
+</body>
+</html>
