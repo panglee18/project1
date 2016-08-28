@@ -1,0 +1,17 @@
+{
+  "name": "WeatherApp",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "express": "3.4.7",
+    "ejs": "*"
+  },
+  "description": "App for weather",
+  "main": "app.js",
+  "author": "Tony Lee",
+  "license": "MIT"
+}
+}
