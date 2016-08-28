@@ -47,7 +47,7 @@ app.get('/api', weatherapi.weatherapi);
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
    var j = schedule.scheduleJob('27 * * * *', function(){
-     var url = 'https://assignment-panglee18.c9users.io/api?search=Hong Kong';
+     var url = 'https://wearther18.herokuapp.com/api?search=Hong Kong';
      req({
             url : url,
             method : "GET"
