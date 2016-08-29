@@ -25,7 +25,7 @@ exports.list = function(req, res){
 };
 
 exports.registration = function(req, res){
-  res.render('registration', { title: 'Registration' });
+  res.render('registration', { value:''});
 };
 
 exports.search_tmp = function(req, res){
