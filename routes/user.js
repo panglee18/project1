@@ -42,7 +42,7 @@ exports.registry = function(req,res){
             res.render('result', {result : err});
             
         }else{
-            res.render('result', {result : 'Sucessfull.'});
+            res.redirect("/search");
             
         };
     });   
@@ -59,7 +59,7 @@ exports.login = function(req, res){
     if(doc == 0){
         res.redirect("/login");
     }else{
-        res.render('result', {result : doc });
+        res.redirect("/search");
     }
   })
 };

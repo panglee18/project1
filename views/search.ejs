@@ -74,22 +74,31 @@
       success(function(data, status, headers, config) {
         var lableadd = [];
         lableadd.length = 0;
-        var cvs1data = [];
         
         $scope.weathers = data;
-        var count = data.length;
-        if(data.length > 10){
-          count = 10;
+        var start =0;
+        if(data.length >10){
+          start = data.length - 10;
         }
+        var cvs1data = [];
+        var cvs2data =[[],[]];
         
-        for(var i=0, l = count; i < l; i++){
+        var j=0;
+        for(var i=start, l = data.length; i < l; i++){
           var dt = new Date(data[i].content.dt*1000);
+          
+          
           //alert('..'+dt);
           //var labeldate = dt.toString();
+          cvs2data[0].push(data[i].content.main.temp_min);
+          cvs2data[1].push(data[i].content.main.temp_max);
+          cvs1data.push(data[i].content.wind.speed);
+          
           lableadd.push(dt.getHours());
+          j++;
         };
         //labledd = ['test1','test2','test3','test4']
-        alert(lableadd.length);
+        //alert(lableadd.length);
         var canv = document.getElementById('cvs1');
                  RGraph.Reset(canv);
                  
@@ -125,10 +134,7 @@
                  RGraph.Reset(canv);
             var line = new RGraph.Line({
                 id: 'cvs2',
-                data: [
-                    [9,30,4,8],
-                    [5,3,8,8]
-                ],
+                data: cvs2data,
                 options: {
                     colors: ['#B71A1A','#54A4CF'],
                     tickmarks: function myTick (obj, data, value, index, x, y, color, prevX, prevY)
@@ -175,7 +181,6 @@
 </head>
 <body ng-app="searchApp">
   <div style="margin:100px;">
-    <nav class="navbar navbar-inverse navbar-static-top">
       
       
 
@@ -196,14 +201,13 @@
     </ul>
 
   </div>
-</nav>
-    <div class="jumbotron"  style="padding:40px;">
+    <div class="alert-danger"  style="padding:40px;">
       
           <div ng-controller="MyModuleWeather">
   <label for="city">City</label>
   <input type="text" ng-model="city" />
   </br>
-  <button ng-click="change()">Change</button>
+  <button ng-click="change()" class="btn btn-success">Change</button>
   <div id="container">
         <canvas id="cvs1" width="600" height="250">[No canvas support]</canvas>
         <canvas id="cvs2" width="600" height="250">[No canvas support]</canvas>
