@@ -42,7 +42,7 @@ exports.registry = function(req,res){
             res.render('result', {result : err});
             
         }else{
-            res.redirect("/search");
+            res.redirect("/login");
             
         };
     });   
