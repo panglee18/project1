@@ -88,8 +88,7 @@
           var dt = new Date(data[i].content.dt*1000);
           
           
-          //alert('..'+dt);
-          //var labeldate = dt.toString();
+          
           cvs2data[0].push(data[i].content.main.temp_min);
           cvs2data[1].push(data[i].content.main.temp_max);
           cvs1data.push(data[i].content.wind.speed);
@@ -206,6 +205,7 @@
         <canvas id="cvs1" width="600" height="250">[No canvas support]</canvas>
         <canvas id="cvs2" width="600" height="250">[No canvas support]</canvas>
     </div>
+    <br/>
   <div data-ng-repeat='weather in weathers'>
     <ul>
     <li>Date: {{ todate(weather.content.dt) }}</li>
