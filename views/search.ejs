@@ -207,10 +207,12 @@
         <canvas id="cvs2" width="600" height="250">[No canvas support]</canvas>
     </div>
   <div data-ng-repeat='weather in weathers'>
-    Date: {{ todate(weather.content.dt) }}<br>
-    Weather : {{ weather.content.weather[0].description }}<br>
-    Temperature : {{ weather.content.main.temp }}<br>
-    Wind Speed : {{ weather.content.wind.speed }}<br>
+    <ul>
+    <li>Date: {{ todate(weather.content.dt) }}</li>
+    <li>Weather : {{ weather.content.weather[0].description }}</li>
+    <li>Temperature : {{ weather.content.main.temp }}</li>
+    <li>Wind Speed : {{ weather.content.wind.speed }}</li>
+   </ul>
    <br>
   </div>
   
