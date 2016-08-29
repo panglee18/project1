@@ -104,7 +104,7 @@
                  
         var bar = new RGraph.Bar({
                 id: 'cvs1',
-                data: [4,8,12],
+                data: cvs1data,
                 options: {
                     colors: ['#5690C9'],
                     hmargin: 25,
@@ -207,10 +207,10 @@
         <canvas id="cvs2" width="600" height="250">[No canvas support]</canvas>
     </div>
   <div data-ng-repeat='weather in weathers'>
+    Date: {{ todate(weather.content.dt) }}<br>
     Weather : {{ weather.content.weather[0].description }}<br>
     Temperature : {{ weather.content.main.temp }}<br>
     Wind Speed : {{ weather.content.wind.speed }}<br>
-    Date: {{ todate(weather.content.dt) }}<br>
    <br>
   </div>
   
