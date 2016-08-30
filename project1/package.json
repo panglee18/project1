@@ -1,0 +1,15 @@
+{
+  "name": "WeatherAPI",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node app.js",
+    "test": "node_modules/jasmine-node/bin/jasmine-node spec"
+  },
+  "dependencies": {
+    "ejs": "*",
+    "express": "3.4.7",
+    "frisby": "^0.8.5",
+    "jasmine-node": "^1.14.5"
+  }
+}

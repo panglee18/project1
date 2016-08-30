@@ -1,0 +1,173 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="RGraph.common.core.js" ></script>
+    <script src="RGraph.bar.js" ></script>
+    <script src="RGraph.line.js" ></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    
+    <title>Bar and Line charts with switch effect</title>
+    
+    <meta name="robots" content="noindex,nofollow" />
+    <meta name="description" content="Bar and Line charts with switch effect" />
+
+    <style>
+        div#container {
+            position: relative;
+            width: 600px;
+            height: 250px;
+        }
+        
+        div#container canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 600px;
+            height: 250px;
+            background-color: white;
+            transition: all 1s;
+            opacity: 1;
+        }
+        
+        div#container canvas#cvs1 {
+            top: 125px;
+            left: 300px;
+            width: 0;
+            height: 0;
+            opacity: 0;
+            transform: rotate(90deg);
+        }
+    </style>
+
+</head>
+<body>
+
+    
+    <div id="container">
+        <canvas id="cvs1" width="600" height="250">[No canvas support]</canvas>
+        <canvas id="cvs2" width="600" height="250">[No canvas support]</canvas>
+    </div>
+
+
+    <script>
+        window.onload = function ()
+        {
+            //
+            // First create the Bar chart but don't call the .draw() method. Only configure th gutter
+            // settings and add some labels.
+            //
+            var lable = ['John','Fred','Lucy', 'kei'];
+            var bar = new RGraph.Bar({
+                id: 'cvs1',
+                data: [4,8,12],
+                options: {
+                    colors: ['#5690C9'],
+                    hmargin: 25,
+                    strokestyle: 'transparent',
+                    axisLinewidth: 15,
+                    textSize: 16,
+                    textColor: '#999',
+                    titleSize: 12,
+                    numyticks: 0,
+                    numxticks: 0,
+                    noxaxis: true,
+                    noyaxis: true,
+                    shadow: false,
+                    title: 'Wind Speed',
+                    backgroundGridVlines: false,
+                    backgroundGridBorder: false,
+                    labels: lable,
+                    textAccessible: false
+                }
+
+            }).draw();
+
+            //
+            // Create the line chart with no axes or labels
+            //
+            var line = new RGraph.Line({
+                id: 'cvs2',
+                data: [
+                    [9,30,4,8],
+                    [5,3,8,8]
+                ],
+                options: {
+                    colors: ['#B71A1A','#54A4CF'],
+                    tickmarks: function myTick (obj, data, value, index, x, y, color, prevX, prevY)
+                    {
+                        // An RGraph function
+                        RGraph.path2(obj.context, ['b', 'a',x, y, 15, 0, 2 * Math.PI, false, 'f', color]);
+                    },
+                    linewidth: 10,
+                    shadow: false,
+                    labels: lable,
+                    title: 'Temperature',
+                    backgroundGridVlines: false,
+                    backgroundGridBorder: false,
+                    noxaxis: true,
+                    hmargin: 25,
+                    textSize: 16,
+                    textColor: '#999',
+                    titleSize: 12,
+                    axisColor: '#999',
+                    textAccessible: false
+                }
+            }).draw();
+        };
+
+        //
+        // The click event handler that swaps the canvas tag width/height properties
+        //
+        $('canvas').click(function (e)
+        {
+            var id = e.target.id;
+
+            if (id === 'cvs1') {
+                $('#cvs1').css({
+                    width: 0,
+                    height: 0,
+                    top: '125px',
+                    left: '300px',
+                    opacity: 0,
+                    transform: 'rotate(90deg)'
+                });
+
+                $('#cvs2').css({
+                    width: '600px',
+                    height: '250px',
+                    top: 0,
+                    left: 0,
+                    opacity: 1,
+                    transform: 'rotate(0)'
+                });
+
+            } else {
+
+                $('#cvs2').css({
+                    width: 0,
+                    height: 0,
+                    top: '125px',
+                    left: '300px',
+                    opacity: 0,
+                    transform: 'rotate(90deg)'
+                });
+
+                $('#cvs1').css({
+                    width: '600px',
+                    height: '250px',
+                    top: 0,
+                    left: 0,
+                    opacity: 1,
+                    transform: 'rotate(0)'
+                });
+            }
+        });
+    </script>
+
+
+
+
+</body>
+</html> 
